@@ -6,15 +6,15 @@ labels: ""
 assignees: ""
 ---
 
-**As a** [role]  
- **I need** [function]  
- **So that** [benefit]
+**Como** [role]  
+**Necesito** [function]  
+**Asi que** [benefit]
 
-### Details and Assumptions
+### Detalles y Suposiciones
 
 - [document what you know]
 
-### Acceptance Criteria
+### Criterio de Aceptación
 
 ```gherkin
 Given [some context]
