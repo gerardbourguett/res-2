@@ -1,15 +1,29 @@
-import React from "react";
 import { Outlet } from "react-router";
 import { authMiddleware } from "~/auth/middleware";
 import { userContext } from "~/auth/context";
+import { AppSidebar } from "~/components/sidebar/app-sidebar";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "~/components/ui/breadcrumb";
+import { Separator } from "~/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "~/components/ui/sidebar";
 import type { Route } from "./+types/layout";
 
-// Exportar el clientMiddleware de autenticación (SPA mode)
+// Aplicar middleware de autenticación (redirige a login si no está autenticado)
 export const clientMiddleware: Route.ClientMiddlewareFunction[] = [
   authMiddleware,
 ];
 
-// clientLoader para obtener el usuario y pasarlo al componente
+// Loader para obtener el usuario del contexto
 export async function clientLoader({ context }: Route.ClientLoaderArgs) {
   const user = context.get(userContext);
   return { user };
@@ -17,24 +31,33 @@ export async function clientLoader({ context }: Route.ClientLoaderArgs) {
 
 export default function DashboardLayout({ loaderData }: Route.ComponentProps) {
   return (
-    <div className="min-h-screen">
-      <header className="bg-white shadow">
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Dashboard
-          </h1>
-          {loaderData?.user && (
-            <p className="text-sm text-gray-600">
-              Bienvenido, {loaderData.user.firstname} {loaderData.user.lastname}
-            </p>
-          )}
-        </div>
-      </header>
-      <main>
-        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+    <SidebarProvider>
+      <AppSidebar user={loaderData?.user ?? undefined} />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Principal</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <Outlet />
         </div>
-      </main>
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

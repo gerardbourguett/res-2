@@ -2,11 +2,12 @@
 import {
   type LoginRequest,
   type LoginResponse,
-  type User,
   AuthError,
   AuthErrorCode,
 } from "../types/auth.types";
+import type { User } from "../types/user.types";
 import { tokenStorage } from "./storage";
+import { api } from "~/lib/api";
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -108,6 +109,7 @@ export function logout(): void {
 
 /**
  * Verificar sesión - Valida el token actual con el backend
+ * Usa api.get que automáticamente incluye el Bearer token
  */
 export async function verifySession(): Promise<User> {
   try {
@@ -120,14 +122,8 @@ export async function verifySession(): Promise<User> {
       );
     }
 
-    const { data } = await axios.get<{ payload: { user: User } }>(
-      `${API_URL}/auth/me`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
+    // api.get ya incluye automáticamente el Bearer token del interceptor
+    const { data } = await api.get<{ payload: { user: User } }>("/auth/me");
 
     // Actualizar usuario en cache
     if (data.payload.user) {

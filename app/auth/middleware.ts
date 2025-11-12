@@ -2,7 +2,7 @@ import { redirect } from "react-router";
 import { userContext } from "./context";
 import { tokenStorage } from "./storage";
 import { verifySession } from "./service";
-import type { User } from "~/types/auth.types";
+import type { User } from "~/types/user.types";
 
 // Función para obtener el usuario desde localStorage y verificar con el backend
 async function getUserFromStorage(): Promise<User | null> {
