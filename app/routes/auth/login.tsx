@@ -6,6 +6,16 @@ import type { ActionFunctionArgs } from "react-router";
 import { login } from "~/auth/service";
 import { AuthErrorCode } from "~/types/auth.types";
 
+export function meta() {
+  return [
+    { title: "Iniciar Sesión - Mi Aplicación" },
+    {
+      name: "description",
+      content: "Inicia sesión para acceder a tu cuenta en Mi Aplicación.",
+    },
+  ];
+}
+
 // clientAction para manejar el login en modo SPA
 export async function clientAction({ request }: ActionFunctionArgs) {
   const formData = await request.formData();

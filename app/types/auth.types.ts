@@ -1,30 +1,12 @@
+import type { User } from "./user.types";
+
+// Request de login
 export interface LoginRequest {
   email: string;
   password: string;
 }
 
-export interface Role {
-  id: number;
-  name: string;
-  createdDate: string;
-  updatedDate: string;
-}
-
-export interface Department {
-  id: number;
-  name: string;
-  createdDate: string;
-  updatedDate: string;
-}
-
-export interface Position {
-  id: number;
-  role: Role;
-  department: Department;
-  createdDate: string;
-  updatedDate: string;
-}
-
+// Notificación del usuario
 export interface Notification {
   id: number;
   title: string;
@@ -37,24 +19,18 @@ export interface Notification {
   updatedDate: string;
 }
 
-export interface User {
-  id: number;
-  firstname: string;
-  lastname: string;
-  email: string;
-  status: boolean;
-  isMailable: boolean;
-  isNotifiable: boolean;
-  positions: Position[];
+// Usuario con notificaciones (extendiendo el User de user.types)
+export interface UserWithNotifications extends User {
   notification: Notification[];
-  isFirstLogin: boolean;
 }
 
+// Payload de la respuesta de login
 export interface Payload {
   token: string;
   user: User;
 }
 
+// Respuesta del endpoint de login
 export interface LoginResponse {
   message: string;
   payload: Payload;

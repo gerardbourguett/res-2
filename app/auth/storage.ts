@@ -1,6 +1,6 @@
 // Utilidades para manejo de tokens en el cliente (SPA mode)
 
-import type { User } from "~/types/auth.types";
+import type { User } from "~/types/user.types";
 
 const TOKEN_KEY = "auth_token";
 const USER_KEY = "auth_user";
